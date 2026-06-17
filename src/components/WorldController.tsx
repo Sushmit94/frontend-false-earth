@@ -2,6 +2,7 @@ import { Suspense, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useControls } from 'leva';
 import * as THREE from 'three/webgpu';
+import { FloatingPanels } from './FloatingPanels';
 import {
     uTime,
     uDeltaTime,
@@ -119,28 +120,30 @@ export function WorldController() {
     });
 
     return <>
-        {/* Environment - use group visibility to avoid remounting */}
-        <Suspense fallback={null}>
-            <group visible={enableEnv}>
+        {/* Environment - use group visibility to avoid remounting */ }
+        < Suspense fallback = { null} >
+            <group visible={ enableEnv }>
                 <StarrySky />
-                <CosmicSystem />
+                < CosmicSystem />
                 <Terrain />
-            </group>
+                </group>
 
-            {/* Major components - toggle visibility instead of unmounting */}
-            <AsyncCompile id="rose" onReady={setComponentReady} debug={debugMode}>
-                <Rose count={2000} visible={enableRose} />
+    {/* Major components - toggle visibility instead of unmounting */ }
+    <AsyncCompile id="rose" onReady = { setComponentReady } debug = { debugMode } >
+        <Rose count={ 2000 } visible = { enableRose } />
             </AsyncCompile>
 
-            <AsyncCompile id="grass" onReady={setComponentReady} debug={debugMode}>
-                {enableGrassDebug && <GrassCullingDebug />}
-                {!enableGrassDebug && <GrassWebGPU visible={enableGrass} />}
-            </AsyncCompile>
+            < AsyncCompile id = "grass" onReady = { setComponentReady } debug = { debugMode } >
+                { enableGrassDebug && <GrassCullingDebug />
+}
+{ !enableGrassDebug && <GrassWebGPU visible={ enableGrass } /> }
+</AsyncCompile>
 
 
-            <AsyncCompile id="character" onReady={setComponentReady} debug={debugMode}>
-                <Character position={[0, 0, 0]} scale={1} visible={enableCharacter} />
+    < AsyncCompile id = "character" onReady = { setComponentReady } debug = { debugMode } >
+        <Character position={ [0, 0, 0] } scale = { 1} visible = { enableCharacter } />
             </AsyncCompile>
-        </Suspense>
-    </>
+            < FloatingPanels />
+            </Suspense>
+            </>
 }
