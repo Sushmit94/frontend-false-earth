@@ -45,6 +45,10 @@ interface GameState {
   isControlEnabled: boolean; 
   setControlEnabled: (enabled: boolean) => void;
 
+  // ===== Panel Popup State =====
+  selectedPanel: { id: string; title: string; rows: { label: string; value: string }[]; bar: number } | null;
+  setSelectedPanel: (panel: { id: string; title: string; rows: { label: string; value: string }[]; bar: number } | null) => void;
+
   // ===== WebGPU State =====
   gpuError: string | null;
   setGpuError: (error: string | null) => void;
@@ -93,6 +97,10 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   isControlEnabled: false,
   setControlEnabled: (enabled) => set({ isControlEnabled: enabled }),
+
+  // ===== Panel Popup State =====
+  selectedPanel: null,
+  setSelectedPanel: (panel) => set({ selectedPanel: panel }),
 
   // ===== WebGPU State =====
   gpuError: null,

@@ -1,9 +1,10 @@
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, useCallback } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three/webgpu'
+import { useGameStore } from '../core/store/gameStore'
 
 /* ── Panel data (extracted from TeamCrystals) ── */
-const PANELS = [
+export const PANELS = [
     {
         id: 'mentor',
         title: '◈ FACULTY MENTOR',
@@ -140,6 +141,33 @@ function createPanelTexture(panel: typeof PANELS[0]): THREE.CanvasTexture {
     ctx.fill()
     ctx.shadowBlur = 0
 
+    // ── "More Info" button
+    const btnW = 140
+    const btnH = 28
+    const btnX = W - 30 - btnW
+    const btnY = barY - 42
+
+    // Button background
+    const btnGrad = ctx.createLinearGradient(btnX, btnY, btnX + btnW, btnY + btnH)
+    btnGrad.addColorStop(0, 'rgba(0, 180, 255, 0.15)')
+    btnGrad.addColorStop(1, 'rgba(0, 220, 255, 0.25)')
+    ctx.fillStyle = btnGrad
+    roundRect(ctx, btnX, btnY, btnW, btnH, 4)
+    ctx.fill()
+
+    // Button border
+    ctx.strokeStyle = 'rgba(0, 200, 255, 0.5)'
+    ctx.lineWidth = 1
+    roundRect(ctx, btnX, btnY, btnW, btnH, 4)
+    ctx.stroke()
+
+    // Button text
+    ctx.font = '600 12px "Courier New", monospace'
+    ctx.fillStyle = 'rgba(0, 220, 255, 0.9)'
+    ctx.textAlign = 'center'
+    ctx.fillText('[ MORE INFO ]', btnX + btnW / 2, btnY + 18)
+    ctx.textAlign = 'left'
+
     const tex = new THREE.CanvasTexture(canvas)
     tex.needsUpdate = true
     return tex
@@ -171,6 +199,7 @@ function PanelCard({
     rotation?: [number, number, number]
 }) {
     const meshRef = useRef<THREE.Mesh>(null)
+    const setSelectedPanel = useGameStore((state) => state.setSelectedPanel)
 
     const { texture, material } = useMemo(() => {
         const tex = createPanelTexture(panel)
@@ -195,6 +224,11 @@ function PanelCard({
         }
     })
 
+    const handleClick = useCallback((e: any) => {
+        e.stopPropagation()
+        setSelectedPanel(panel)
+    }, [panel, setSelectedPanel])
+
     const cardWidth = 4.5
     const cardHeight = 2.8 // maintain ~512:320 ratio
 
@@ -204,6 +238,9 @@ function PanelCard({
     position = { position }
     rotation = { rotation || [0, 0, 0]
 }
+onClick = { handleClick }
+onPointerOver = {(e) => { e.stopPropagation(); document.body.style.cursor = 'pointer' }}
+onPointerOut = {(e) => { e.stopPropagation(); document.body.style.cursor = 'auto' }}
         >
     <planeGeometry args={ [cardWidth, cardHeight] } />
         < primitive object = { material } />

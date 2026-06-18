@@ -2,6 +2,7 @@ import { useGameStore } from "../core/store/gameStore";
 import { LoadingScreen } from "./LoadingScreen";
 import AudioButton from "./AudioButton";
 import { SideBar } from "./SideBar";
+import { PanelPopup } from "./PanelPopup";
 import { TouchJoystick } from "../core/input/TouchJoystick";
 import { input } from "../core/input/controls";
 
@@ -20,6 +21,7 @@ export function UI() {
             zIndex: 10 // Ensure UI is above Canvas
         }}>
             <LoadingScreen />
+            <PanelPopup />
 
             <div style={{
                 position: 'absolute',
