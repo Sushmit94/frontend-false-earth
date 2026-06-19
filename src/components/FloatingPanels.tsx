@@ -262,28 +262,29 @@ export function FloatingPanels() {
     return (
         <group ref= { groupRef } >
         {/* Far left */ }
-        < PanelCard
-    panel = { PANELS[0]}
-    position = { [-7.5, 3.0, -3]}   // ← y: 0.9 → 3.0
-    rotation = { [0, 0.25, 0]}
+    {/* Top Left corner */ }
+    <PanelCard
+  panel={ PANELS[0] }
+    position = { [-8, 3.0, -8]}
+    rotation = { [0, 0.4, 0]}
         />
-        {/* Center left */ }
+        {/* Top Right corner */ }
         < PanelCard
     panel = { PANELS[1]}
-    position = { [-2.5, 3.0, -4.5]}  // ← y: 0.9 → 3.0
-    rotation = { [0, 0.1, 0]}
+    position = { [8, 3.0, -8]}
+    rotation = { [0, -0.4, 0]}
         />
-        {/* Center right */ }
+        {/* Bottom Left corner */ }
         < PanelCard
     panel = { PANELS[2]}
-    position = { [2.5, 3.0, -4.5]}   // ← y: 0.9 → 3.0
-    rotation = { [0, -0.1, 0]}
+    position = { [-8, 3.0, 2]}
+    rotation = { [0, 0.4, 0]}
         />
-        {/* Far right */ }
+        {/* Bottom Right corner */ }
         < PanelCard
     panel = { PANELS[3]}
-    position = { [7.5, 3.0, -3]}     // ← y: 0.9 → 3.0
-    rotation = { [0, -0.25, 0]}
+    position = { [8, 3.0, 2]}
+    rotation = { [0, -0.4, 0]}
         />
         </group>
     )
