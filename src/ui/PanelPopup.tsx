@@ -38,8 +38,6 @@ export function PanelPopup() {
         if (e.target === overlayRef.current) handleClose();
     };
 
-    const barPercent = Math.round(selectedPanel.bar * 100);
-
     return (
         <div
             ref= { overlayRef }
@@ -217,75 +215,6 @@ onMouseLeave = {(e) => {
                     ))}
 </div>
 
-{/* Progress section (Correctly Commented Out) */ }
-<div style={ { marginTop: '32px' } }>
-    <div style={
-        {
-            height: '1px',
-                background: 'linear-gradient(90deg, transparent, rgba(0, 200, 255, 0.3), transparent)',
-                    marginBottom: '20px',
-                    }
-} />
-    < div style = {{
-    display: 'flex',
-        justifyContent: 'space-between',
-            alignItems: 'center',
-                marginBottom: '12px',
-                    }}>
-    <span style={
-        {
-            fontFamily: '"Courier New", monospace',
-                fontSize: '12px',
-                    color: 'rgba(0, 200, 255, 0.5)',
-                        letterSpacing: '2px',
-                        }
-}>
-    CRYSTAL RESONANCE
-        </span>
-        < span style = {{
-    fontFamily: '"Courier New", monospace',
-        fontSize: '14px',
-            color: 'rgba(0, 220, 255, 0.9)',
-                fontWeight: 600,
-                        }}>
-    { barPercent } %
-    </span>
-    </div>
-    < div style = {{
-    width: '100%',
-        height: '8px',
-            backgroundColor: 'rgba(0, 200, 255, 0.08)',
-                borderRadius: '4px',
-                    overflow: 'hidden',
-                        position: 'relative',
-                    }}>
-    <div style={
-        {
-            width: `${barPercent}%`,
-                height: '100%',
-                    background: 'linear-gradient(90deg, rgba(0, 180, 255, 0.4), rgba(0, 220, 255, 0.8))',
-                        borderRadius: '4px',
-                            transition: 'width 1s cubic-bezier(0.16, 1, 0.3, 1)',
-                                boxShadow: '0 0 12px rgba(0, 200, 255, 0.4)',
-                                    position: 'relative',
-                        }
-}>
-    <div style={
-        {
-            position: 'absolute',
-                right: '-3px',
-                    top: '50%',
-                        transform: 'translateY(-50%)',
-                            width: '6px',
-                                height: '6px',
-                                    borderRadius: '50%',
-                                        backgroundColor: 'rgba(0, 220, 255, 1)',
-                                            boxShadow: '0 0 10px rgba(0, 220, 255, 0.8), 0 0 20px rgba(0, 220, 255, 0.4)',
-                            }
-} />
-    </div>
-    </div>
-    </div>
 
 
 {/* Footer hint */ }

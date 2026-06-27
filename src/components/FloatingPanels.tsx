@@ -11,7 +11,6 @@ export const PANELS = [
         rows: [
             { label: 'Name', value: 'Dr. A. Raman' },
             { label: 'Role', value: 'Faculty Mentor' },
-            { label: 'Crystal', value: 'Gem / Gold' },
         ],
         bar: 1.0,
     },
@@ -21,7 +20,6 @@ export const PANELS = [
         rows: [
             { label: 'Name', value: 'Ishita Verma' },
             { label: 'Role', value: 'Club Coord.' },
-            { label: 'Crystal', value: 'Shard / Violet' },
         ],
         bar: 0.85,
     },
@@ -248,10 +246,57 @@ onPointerOut = {(e) => { e.stopPropagation(); document.body.style.cursor = 'auto
     )
 }
 
-/* ── Main component: 4 panels arranged in a cluster ── */
+const PLACEHOLDER_PANELS: typeof PANELS = [
+    {
+        id: 'mentor',
+        title: '◈ FACULTY MENTOR',
+        rows: [
+            { label: 'Name', value: '???' },
+            { label: 'Role', value: '???' },
+        ],
+        bar: 0,
+    },
+    {
+        id: 'coordinator',
+        title: '◈ COORDINATOR',
+        rows: [
+            { label: 'Name', value: '???' },
+            { label: 'Role', value: '???' },
+        ],
+        bar: 0,
+    },
+    {
+        id: 'leads',
+        title: '◈ TEAM LEADS',
+        rows: [
+            { label: 'AI / ML', value: '--- TBD ---' },
+            { label: 'WebSec', value: '--- TBD ---' },
+            { label: 'Interdisc.', value: '--- TBD ---' },
+        ],
+        bar: 0,
+    },
+    {
+        id: 'core',
+        title: '◈ CORE MEMBERS',
+        rows: [
+            { label: 'AI / ML', value: '--- TBD ---' },
+            { label: 'WebSec', value: '--- TBD ---' },
+            { label: 'Interdisc.', value: '--- TBD ---' },
+        ],
+        bar: 0,
+    },
+]
+
+const YEAR_PANELS: Record<number, typeof PANELS> = {
+    2026: PANELS,
+    2027: PLACEHOLDER_PANELS,
+    2028: PLACEHOLDER_PANELS,
+}
+
 /* ── Main component: 4 panels spread across the scene ── */
 export function FloatingPanels() {
     const groupRef = useRef<THREE.Group>(null)
+    const selectedYear = useGameStore((state) => state.selectedYear)
 
     useFrame((state) => {
         if (groupRef.current) {
@@ -259,30 +304,31 @@ export function FloatingPanels() {
         }
     })
 
+    const activePanels = YEAR_PANELS[selectedYear] ?? PLACEHOLDER_PANELS
+
     return (
         <group ref= { groupRef } >
-        {/* Far left */ }
-    {/* Top Left corner */ }
-    <PanelCard
-  panel={ PANELS[0] }
+        {/* Top Left corner */ }
+        < PanelCard
+    panel = { activePanels[0]}
     position = { [-8, 3.0, -8]}
     rotation = { [0, 0.4, 0]}
         />
         {/* Top Right corner */ }
         < PanelCard
-    panel = { PANELS[1]}
+    panel = { activePanels[1]}
     position = { [8, 3.0, -8]}
     rotation = { [0, -0.4, 0]}
         />
         {/* Bottom Left corner */ }
         < PanelCard
-    panel = { PANELS[2]}
+    panel = { activePanels[2]}
     position = { [-8, 3.0, 2]}
     rotation = { [0, 0.4, 0]}
         />
         {/* Bottom Right corner */ }
         < PanelCard
-    panel = { PANELS[3]}
+    panel = { activePanels[3]}
     position = { [8, 3.0, 2]}
     rotation = { [0, -0.4, 0]}
         />

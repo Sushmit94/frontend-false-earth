@@ -4,7 +4,7 @@ import { AudioListener } from 'three/webgpu';
 import * as THREE from 'three/webgpu';
 
 export enum CameraMode {
-  Follow  = 0,
+  Follow = 0,
   FPV = 1,
   Detached = 2,
 }
@@ -14,7 +14,7 @@ interface GameState {
   cameraMode: CameraMode;
   setCameraMode: (mode: CameraMode) => void;
   toggleCameraMode: () => void;
-  
+
   // ===== Character State =====
   characterRef: React.MutableRefObject<Group | null> | null;
   setCharacterRef: (ref: React.MutableRefObject<Group | null> | null) => void;
@@ -42,7 +42,7 @@ interface GameState {
   quality: 'low' | 'high';
   toggleQuality: () => void;
 
-  isControlEnabled: boolean; 
+  isControlEnabled: boolean;
   setControlEnabled: (enabled: boolean) => void;
 
   // ===== Panel Popup State =====
@@ -52,6 +52,10 @@ interface GameState {
   // ===== WebGPU State =====
   gpuError: string | null;
   setGpuError: (error: string | null) => void;
+
+  // ===== Timeline Year Selection =====
+  selectedYear: number;
+  setSelectedYear: (year: number) => void;
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
@@ -61,7 +65,7 @@ export const useGameStore = create<GameState>((set, get) => ({
   toggleCameraMode: () => set((state) => ({
     cameraMode: (state.cameraMode + 1) % 3
   })),
-  
+
   // ===== Character State =====
   characterRef: null,
   setCharacterRef: (ref) => set({ characterRef: ref }),
@@ -92,7 +96,7 @@ export const useGameStore = create<GameState>((set, get) => ({
   isMobile: false,
   setIsMobile: (isMobile) => set({ isMobile: isMobile }),
 
-  quality: 'high',
+  quality: 'low',
   toggleQuality: () => set((state) => ({ quality: state.quality === 'high' ? 'low' : 'high' })),
 
   isControlEnabled: false,
@@ -105,4 +109,8 @@ export const useGameStore = create<GameState>((set, get) => ({
   // ===== WebGPU State =====
   gpuError: null,
   setGpuError: (error) => set({ gpuError: error }),
+
+  // ===== Timeline Year Selection =====
+  selectedYear: 2026,
+  setSelectedYear: (year) => set({ selectedYear: year }),
 }));

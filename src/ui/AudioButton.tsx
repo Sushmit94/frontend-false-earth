@@ -9,7 +9,7 @@ import { useShortcut } from '@core/hooks/useShortcut';
 
 const tracks = [
     { id: 'grass_field', url: '/audio/grass_field.mp3', volume: 1.5 },
-    { id: 'noise', url: '/audio/noise.m4a', volume: 0.1}
+    { id: 'noise', url: '/audio/noise.m4a', volume: 0.1 }
 ]
 export default function AudioButton() {
     const listener = useGameStore(s => s.audioListener);
@@ -32,38 +32,41 @@ export default function AudioButton() {
 
     return (
         <WebGPUCanvas
-            width={size}
-            height={size}
-            style={{ position: 'fixed', bottom: 0, right: 0, zIndex: 20 }}
+            width= { size }
+    height = { size }
+    style = {{ position: 'fixed', bottom: 0, right: 0, zIndex: 20 }
+}
         >
-            {/* Interaction Layer (Invisible Hitbox) */}
-            <mesh
-                onClick={() => setIsSoundOn(!isSoundOn)}
-                onPointerOver={() => {
-                    document.body.style.cursor = 'pointer';
-                }}
-                onPointerOut={() => {
-                    document.body.style.cursor = 'auto';
-                }}
-                visible={false} // Invisible but captures events
-            >
-                <circleGeometry args={[radius * 1.2, 32]} />
-                <meshBasicMaterial />
-            </mesh>
+    {/* Interaction Layer (Invisible Hitbox) */ }
+    < mesh
+onClick = {() => setIsSoundOn(!isSoundOn)}
+onPointerOver = {() => {
+    document.body.style.cursor = 'pointer';
+}}
+onPointerOut = {() => {
+    document.body.style.cursor = 'auto';
+}}
+visible = { false} // Invisible but captures events
+    >
+    <circleGeometry args={ [radius * 1.2, 32] } />
+        < meshBasicMaterial />
+        </mesh>
 
-            <Bgm listener={listener} active={isSoundOn} tracks={tracks} />
+        < Bgm listener = { listener } active = { isSoundOn } tracks = { tracks } />
 
-            {/* Visual Layer */}
+            {/* Visual Layer */ }
             <group>
-                {[12.35, 0.58, 3.67].map((seed, i) => (
-                    <DistortedCircle
-                        key={i}
-                        radius={radius}
-                        distortionStrength={isSoundOn ? 1 : 0}
-                        seed={seed}
-                    />
-                ))}
-            </group>
-        </WebGPUCanvas>
+{
+    [12.35, 0.58, 3.67].map((seed, i) => (
+        <DistortedCircle
+                        key= { i }
+                        radius = { radius }
+                        distortionStrength = { isSoundOn? 1: 0 }
+                        seed = { seed }
+        />
+                ))
+}
+</group>
+    </WebGPUCanvas>
     );
 }
