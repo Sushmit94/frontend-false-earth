@@ -11,17 +11,10 @@ import { solveTank } from '../utils/solveTank';
 import { solveCam } from '../utils/solveCam';
 import { input } from '../../../core/input/controls';
 
-export type StepType = 'walk' | 'run' | 'back';
-export interface StepEvent {
-  type: StepType;
-  volume: number;
-}
-
 export function useCharacterPhysics(
   groupRef: MutableRefObject<Group | null>,
   scene: Object3D | null,
-  animations: AnimationClip[],
-  onStep: (event: StepEvent) => void
+  animations: AnimationClip[]
 ) {
   const { camera } = useThree();
   const cameraMode = useGameStore((state) => state.cameraMode);
@@ -31,12 +24,6 @@ export function useCharacterPhysics(
   const sceneRef = useRef<Object3D | null>(null);
   sceneRef.current = scene;
   const { actions } = useAnimations(animations, sceneRef);
-
-  const animState = useRef({
-    lastWalkTime: 0,
-    lastRunTime: 0,
-    lastBackTime: 0
-  });
 
   const state = useRef<PhysicsState>({ ...INITIAL_PHYSICS_STATE });
 
@@ -50,29 +37,6 @@ export function useCharacterPhysics(
       }
     });
   }, [actions]);
-
-  const processFootstep = (
-    actionName: string,
-    weight: number,
-    thresholds: number[],
-    stateKey: keyof typeof animState.current,
-    type: StepType
-  ) => {
-    const action = actions[actionName];
-    if (!action || weight <= 0.5) return;
-
-    const duration = action.getClip().duration;
-    const time = (action.time % duration) / duration;
-    const lastTime = animState.current[stateKey];
-
-    thresholds.forEach(t => {
-      if (lastTime < t && time >= t) {
-        onStep?.({ type, volume: weight });
-      }
-    });
-
-    animState.current[stateKey] = time;
-  };
 
   useFrame((_, delta) => {
     if (!groupRef.current || !isControlEnabled) return;
@@ -106,11 +70,6 @@ export function useCharacterPhysics(
     actions['Walk']?.setEffectiveWeight(s.walkWeight);
     actions['Run']?.setEffectiveWeight(s.runWeight);
     actions['Back']?.setEffectiveWeight(s.backWeight);
-
-    // Footsteps
-    processFootstep('Walk', s.walkWeight, [0.05, 0.55], 'lastWalkTime', 'walk');
-    processFootstep('Run', s.runWeight, [0.1, 0.6], 'lastRunTime', 'run');
-    processFootstep('Back', s.backWeight, [0.1, 0.6], 'lastBackTime', 'back');
   });
 }
 

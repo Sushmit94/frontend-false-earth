@@ -1,6 +1,5 @@
 import { useGameStore } from "../core/store/gameStore";
 import { LoadingScreen } from "./LoadingScreen";
-import AudioButton from "./AudioButton";
 import { SideBar } from "./SideBar";
 import { PanelPopup } from "./PanelPopup";
 import { TouchJoystick } from "../core/input/TouchJoystick";
@@ -32,7 +31,6 @@ export function UI() {
                 visibility: isControlEnabled ? 'visible' : 'hidden',
                 transition: `opacity 0.5s ease, visibility 0s linear ${isControlEnabled ? '0s' : '0.5s'}`
             }}>
-                <AudioButton />
                 <SideBar />
 
                 {isMobile &&

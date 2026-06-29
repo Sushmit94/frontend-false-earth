@@ -1,4 +1,4 @@
-import { useRef, useMemo, useEffect, Suspense } from 'react';
+import { useRef, useMemo, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Group } from 'three';
 import * as THREE from 'three/webgpu';
@@ -7,11 +7,9 @@ import { CharacterProps } from './config';
 import { useCharacterAssets } from './hooks/useCharacterAssets';
 import { useCharacterPhysics } from './hooks/useCharacterPhysics';
 import { useGameStore, CameraMode } from '../../core/store/gameStore';
-import { CharacterAudio, CharacterAudioHandle } from './CharacterAudio';
 
 export const Character = ({ position = [0, 0, 0], scale = 1, visible = true }: CharacterProps) => {
   const groupRef = useRef<Group>(null);
-  const audioRef = useRef<CharacterAudioHandle>(null);
 
   const hasPrevFrameRef = useRef(false);
   const worldPosRef = useRef(new THREE.Vector3());
@@ -27,9 +25,7 @@ export const Character = ({ position = [0, 0, 0], scale = 1, visible = true }: C
   // Get camera mode from store
   const cameraMode = useGameStore((state) => state.cameraMode);
 
-  useCharacterPhysics(groupRef, scene, animations, (event) => {
-    audioRef.current?.playStep(event.type, event.volume);
-  });
+  useCharacterPhysics(groupRef, scene, animations);
 
   // Publish character ref to global store
   useEffect(() => {
@@ -73,9 +69,6 @@ export const Character = ({ position = [0, 0, 0], scale = 1, visible = true }: C
     <group ref={groupRef} position={position} scale={scale} visible={visible} dispose={null}>
       {scene && <primitive object={scene} />}
 
-      <Suspense fallback={null}>
-        <CharacterAudio ref={audioRef} />
-      </Suspense>
     </group>
   );
 };

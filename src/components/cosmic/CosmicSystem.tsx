@@ -1,10 +1,9 @@
-import { useRef, Suspense, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { useControls } from 'leva';
 import { MathUtils } from 'three';
 import { useCosmicBeamSpawner } from './hooks/useCosmicBeamSpawner';
 import { useCosmicWaves } from './hooks/useCosmicWaves';
 import { CosmicBeams, CosmicBeamsRef } from './CosmicBeams';
-import { BeamAudio } from './BeamAudio';
 import { gameEvents } from '../../core/events';
 import { useShortcut } from '@core/hooks/useShortcut';
 
@@ -44,9 +43,6 @@ export function CosmicSystem() {
   return (
     <>
       <CosmicBeams ref={beamsRef} />
-      <Suspense fallback={null}>
-        <BeamAudio />
-      </Suspense>
     </>
   );
 }

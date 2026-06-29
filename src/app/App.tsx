@@ -7,7 +7,6 @@ import { WebGPURenderer } from "three/webgpu";
 import Effects from "../components/Effects/Effects";
 import { useGameStore } from "../core/store/gameStore";
 import { CameraViewControl } from "../components/camera/CameraViewControl";
-import { AudioManager } from "@core";
 import { DeviceDetector } from "../core/utils/DeviceDetector";
 import { UI } from "../ui/UI";
 import { preloadVATAssets } from "../components/Rose/core";
@@ -17,20 +16,10 @@ import * as THREE from "three/webgpu";
 import { KeyboardMapper } from "@core";
 import { input, keyBindings } from "../core/input/controls";
 import { useShortcut } from "@core/hooks/useShortcut";
-import { AudioLoader } from 'three';
 import { KTX2Preloader } from "@core";
 import { ROSE_TEXTURES } from "../components/Rose/core/config";
 import { BODY_TEXTURE_PATHS, DETAIL_TEXTURE_PATHS, MODEL_PATHS } from '../components/character/config';
 
-
-useLoader.preload(AudioLoader,
-    ['/audio/fs_grass1.mp3',
-        '/audio/fs_grass2.mp3',
-        '/audio/fs_grass3.mp3',
-        '/audio/fs_grass4.mp3',
-        '/audio/fs_grass5.mp3']);
-
-useLoader.preload(AudioLoader, ['/audio/wave01.mp3']);
 
 useGLTF.preload(MODEL_PATHS);
 
@@ -45,7 +34,6 @@ export default function App() {
 
     const toggleCameraMode = useGameStore((state) => state.toggleCameraMode);
     const setGpuError = useGameStore((state) => state.setGpuError);
-    const setAudioListener = useGameStore((state) => state.setAudioListener);
     const gpuError = useGameStore((state) => state.gpuError);
 
     // Check WebGPU support on mount
@@ -113,8 +101,6 @@ export default function App() {
                     <KTX2Preloader paths={BODY_TEXTURE_PATHS} />
                     <KTX2Preloader paths={DETAIL_TEXTURE_PATHS} />
                 </Suspense>
-
-                <AudioManager onListenerCreated={setAudioListener} />
 
                 <PerformanceMonitor
                     bounds={() => [28, 32]}
